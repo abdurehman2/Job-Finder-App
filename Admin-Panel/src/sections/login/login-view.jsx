@@ -25,20 +25,57 @@ export default function LoginView() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleClick = () => {
-    router.push('/dashboard');
+  const handleClick = async () => {
+    try {
+      // Make a POST request to the backend login endpoint
+      const response = await fetch('http://localhost:6600/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      // Check if the login was successful (status code 200)
+      if (response.ok) {
+        const data = await response.json();
+
+        // Store user information and token in localStorage or sessionStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+
+        // Navigate to the dashboard page
+        router.push('/dashboard');
+      } else {
+        // Handle unsuccessful login (display an error message, etc.)
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   const renderForm = (
     <>
       <Stack spacing={3} mb={2}>
-        <TextField name="email" label="Email address" />
+        <TextField
+          name="email"
+          label="Email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
         <TextField
           name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
+          onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

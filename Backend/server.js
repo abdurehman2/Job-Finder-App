@@ -1,13 +1,14 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import morgan from "morgan";
-import bodyParser from "body-parser";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
-import xss from "xss-clean";
-import mongoSanitize from "express-mongo-sanitize";
+const xss = require("xss-clean");
+const mongoSanitize = require("express-mongo-sanitize");
 
-import dbConnection from "./dbConfig/dbConnection.js";
+const dbConnection = require("./dbConfig/dbConnection");
+const adminRoutes = require("./routes/adminRoutes");
 //import router from "./routes/index.js";
 //import errorMiddleware from "./middlewares/errorMiddleware.js";
 
@@ -30,6 +31,8 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan("dev"));
+
+app.use("/admin", adminRoutes);
 
 //app.use(router);
 

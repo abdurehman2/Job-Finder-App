@@ -14,24 +14,19 @@ import IconButton from '@mui/material/IconButton';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
-import EditUserDialog from './edit-user-dialog';
-
 // ----------------------------------------------------------------------
 
 export default function UserTableRow({
   selected,
-  email,
+  name,
   avatarUrl,
   accountType,
   role,
-  jobTitle,
+  jobs,
   status,
   handleClick,
-  user,
 }) {
   const [open, setOpen] = useState(null);
-
-  const [isEditUserDialogOpen, setEditUserDialogOpen] = useState(false);
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -39,14 +34,6 @@ export default function UserTableRow({
 
   const handleCloseMenu = () => {
     setOpen(null);
-  };
-
-  const handleOpenEditUserDialog = () => {
-    setEditUserDialogOpen(true);
-  };
-
-  const handleCloseEditUserDialog = () => {
-    setEditUserDialogOpen(false);
   };
 
   return (
@@ -60,7 +47,7 @@ export default function UserTableRow({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={email} src={avatarUrl} /> */}
             <Typography variant="subtitle2" noWrap>
-              {email}
+              {name}
             </Typography>
           </Stack>
         </TableCell>
@@ -69,10 +56,10 @@ export default function UserTableRow({
 
         <TableCell>{role}</TableCell>
 
-        <TableCell align="center">{jobTitle}</TableCell>
+        <TableCell align="center">{jobs}</TableCell>
 
         <TableCell>
-          <Label color={(status === 'Blocked' && 'error') || 'success'}>{status}</Label>
+          <Label color={(status === 'blocked' && 'error') || 'success'}>{status}</Label>
         </TableCell>
 
         <TableCell align="right">
@@ -92,16 +79,10 @@ export default function UserTableRow({
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleOpenEditUserDialog}>
+        <MenuItem onClick={handleCloseMenu}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-
-        <EditUserDialog
-          open={isEditUserDialogOpen}
-          onClose={handleCloseEditUserDialog}
-          user={user}
-        />
 
         <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
@@ -116,10 +97,9 @@ UserTableRow.propTypes = {
   avatarUrl: PropTypes.any,
   accountType: PropTypes.string,
   handleClick: PropTypes.func,
-  jobTitle: PropTypes.string,
-  email: PropTypes.string,
+  jobs: PropTypes.any,
+  name: PropTypes.any,
   role: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
-  user: PropTypes.any,
 };

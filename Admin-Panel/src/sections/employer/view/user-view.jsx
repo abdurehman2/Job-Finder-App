@@ -23,7 +23,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function EmployerPage() {
   const [users, setUsers] = useState([]);
 
   const [page, setPage] = useState(0);
@@ -45,7 +45,7 @@ export default function UserPage() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:6600/admin/users', {
+        const response = await fetch('http://localhost:6600/admin/company', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -77,18 +77,18 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.email);
+      const newSelecteds = users.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, email) => {
-    const selectedIndex = selected.indexOf(email);
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, email);
+      newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -137,7 +137,7 @@ export default function UserPage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">User Accounts</Typography>
+        <Typography variant="h4">Employer Accounts</Typography>
 
         <Button
           variant="contained"
@@ -167,11 +167,18 @@ export default function UserPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'email', label: 'Email' },
+                  { id: 'name', label: 'Name' },
                   { id: 'accountType', label: 'Account Type' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'jobTitle', label: 'Job Title', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'location', label: 'Location' },
+                  {
+                    id: 'jobs',
+                    label: 'Jobs Posted',
+                    align: 'center',
+                  },
+                  {
+                    id: 'status',
+                    label: 'Status',
+                  },
                   { id: '' },
                 ]}
               />
@@ -181,15 +188,14 @@ export default function UserPage() {
                   .map((user) => (
                     <UserTableRow
                       key={user.id}
-                      email={user.email}
-                      role={user.role}
-                      status={user.status}
+                      name={user.name}
+                      role={user.location}
+                      jobs={user.jobPosts.length}
                       accountType={user.accountType}
                       avatarUrl={user.avatarUrl}
-                      jobTitle={user.jobTitle}
-                      user={user}
-                      selected={selected.indexOf(user.email) !== -1}
-                      handleClick={(event) => handleClick(event, user.email)}
+                      status={user.status}
+                      selected={selected.indexOf(user.name) !== -1}
+                      handleClick={(event) => handleClick(event, user.name)}
                     />
                   ))}
 
