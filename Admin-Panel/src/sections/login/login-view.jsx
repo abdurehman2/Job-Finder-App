@@ -13,6 +13,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
+import { useAuth } from 'src/context/AuthContext';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
@@ -21,8 +22,8 @@ import Iconify from 'src/components/iconify';
 
 export default function LoginView() {
   const theme = useTheme();
-
   const router = useRouter();
+  const { login } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -47,8 +48,9 @@ export default function LoginView() {
         const data = await response.json();
 
         // Store user information and token in localStorage or sessionStorage
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
+        //
+        login(data);
+        console.log(data);
 
         // Navigate to the dashboard page
         router.push('/dashboard');

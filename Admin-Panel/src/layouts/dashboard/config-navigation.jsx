@@ -22,11 +22,6 @@ const navConfig = [
     path: '/employer_account',
     icon: icon('ic_user'),
   },
-  {
-    title: 'blog',
-    path: '/blog',
-    icon: icon('ic_blog'),
-  },
 ];
 
 export default navConfig;

@@ -196,6 +196,7 @@ export default function EmployerPage() {
                       status={user.status}
                       selected={selected.indexOf(user.name) !== -1}
                       handleClick={(event) => handleClick(event, user.name)}
+                      user={user}
                     />
                   ))}
 

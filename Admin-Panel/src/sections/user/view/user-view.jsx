@@ -55,7 +55,11 @@ export default function UserPage() {
 
         if (response.ok) {
           const data = await response.json();
-          setUsers(data);
+          const usersWithNames = data.map((user) => ({
+            ...user,
+            name: `${user.firstName} ${user.lastName}`,
+          }));
+          setUsers(usersWithNames);
         } else {
           console.error('Failed to fetch users:', response.status);
         }
@@ -77,18 +81,18 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.email);
+      const newSelecteds = users.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, email) => {
-    const selectedIndex = selected.indexOf(email);
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, email);
+      newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -167,7 +171,7 @@ export default function UserPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'email', label: 'Email' },
+                  { id: 'name', label: 'Name' },
                   { id: 'accountType', label: 'Account Type' },
                   { id: 'role', label: 'Role' },
                   { id: 'jobTitle', label: 'Job Title', align: 'center' },
@@ -181,7 +185,7 @@ export default function UserPage() {
                   .map((user) => (
                     <UserTableRow
                       key={user.id}
-                      email={user.email}
+                      name={user.name}
                       role={user.role}
                       status={user.status}
                       accountType={user.accountType}

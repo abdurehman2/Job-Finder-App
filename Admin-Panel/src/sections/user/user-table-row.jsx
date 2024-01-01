@@ -20,7 +20,7 @@ import EditUserDialog from './edit-user-dialog';
 
 export default function UserTableRow({
   selected,
-  email,
+  name,
   avatarUrl,
   accountType,
   role,
@@ -60,7 +60,7 @@ export default function UserTableRow({
           <Stack direction="row" alignItems="center" spacing={2}>
             {/* <Avatar alt={email} src={avatarUrl} /> */}
             <Typography variant="subtitle2" noWrap>
-              {email}
+              {name}
             </Typography>
           </Stack>
         </TableCell>
@@ -117,7 +117,7 @@ UserTableRow.propTypes = {
   accountType: PropTypes.string,
   handleClick: PropTypes.func,
   jobTitle: PropTypes.string,
-  email: PropTypes.string,
+  name: PropTypes.string,
   role: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,

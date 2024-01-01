@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/userModel");
 const Company = require("../models/companyModel");
+const Jobs = require("../models/jobsModel");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const auth = require("../middlewares/adminAuth");
@@ -172,6 +173,22 @@ router.get("/company", auth, async (req, res) => {
   }
 });
 
+// Get Jobs
+router.get("/jobs", auth, async (req, res) => {
+  const admin = await User.findById(req.user.user_id);
+  try {
+    if (admin) {
+      const jobs = await Jobs.find();
+      res.json(jobs);
+    } else {
+      res.status(403).json({ message: "Only admin can access this route" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 // Update a User
 router.put("/users/:id", auth, async (req, res) => {
   const admin = await User.findById(req.user.user_id);
@@ -211,6 +228,55 @@ router.put("/users/:id", auth, async (req, res) => {
             jobTitle,
             about,
             status,
+            accountType,
+          },
+          { new: true }
+        );
+        res.json(user);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send(error);
+      }
+    } else {
+      res.status(403).json({ message: "Only admin can access this route" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+// Update a Company
+router.put("/company/:id", auth, async (req, res) => {
+  const admin = await User.findById(req.user.user_id);
+  try {
+    if (admin) {
+      const { id } = req.params;
+      const {
+        name,
+        email,
+        password,
+        contact,
+        location,
+        profileURL,
+        about,
+        status,
+        role,
+        accountType,
+      } = req.body;
+      try {
+        const user = await Company.findByIdAndUpdate(
+          id,
+          {
+            name,
+            email,
+            password,
+            contact,
+            location,
+            profileURL,
+            about,
+            status,
+            role,
             accountType,
           },
           { new: true }
@@ -278,6 +344,74 @@ router.put("/users/:userId/unblock", auth, async (req, res) => {
 
     // Check if the user exists
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.role == "admin") {
+      return res.status(404).json({ message: "Cannot block other admin" });
+    }
+
+    // Update the user's status to 'blocked'
+    user.status = "Active";
+    await user.save();
+
+    res.json({ message: "User unblocked successfully", unblockedUser: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Block a Company
+router.put("/company/:userId/block", auth, async (req, res) => {
+  const admin = await User.findById(req.user.user_id);
+  try {
+    // Check if the logged-in user is an admin
+    if (!admin) {
+      return res
+        .status(403)
+        .json({ message: "Only admin can access this route" });
+    }
+
+    const userId = req.params.userId;
+
+    // Check if the user exists
+    const user = await Company.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.role == "admin") {
+      return res.status(404).json({ message: "Cannot block other admin" });
+    }
+
+    // Update the user's status to 'blocked'
+    user.status = "Blocked";
+    await user.save();
+
+    res.json({ message: "User blocked successfully", blockedUser: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Unblock a user
+router.put("/company/:userId/unblock", auth, async (req, res) => {
+  const admin = await User.findById(req.user.user_id);
+  try {
+    // Check if the logged-in user is an admin
+    if (!admin) {
+      return res
+        .status(403)
+        .json({ message: "Only admin can access this route" });
+    }
+
+    const userId = req.params.userId;
+
+    // Check if the user exists
+    const user = await Company.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
