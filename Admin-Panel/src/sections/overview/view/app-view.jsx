@@ -36,7 +36,7 @@ export default function AppView() {
           const currentDate = new Date();
           const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
           const usersThisMonth = users.filter((user) => new Date(user.createdAt) >= startOfMonth);
-          setTotalUsersThisMonth(usersThisMonth);
+          setTotalUsersThisMonth(usersThisMonth.length);
         } else {
           console.error('Failed to fetch total users');
         }
@@ -63,7 +63,7 @@ export default function AppView() {
             (company) => new Date(company.createdAt) >= startOfMonth
           );
 
-          setTotalCompaniesThisMonth(companiesThisMonth);
+          setTotalCompaniesThisMonth(companiesThisMonth.length);
         } else {
           console.error('Failed to fetch total companies');
         }
@@ -96,8 +96,6 @@ export default function AppView() {
     fetchTotalCompanies();
     fetchTotalJobs();
   }, [token]);
-
-  console.log(totalJobs);
 
   return (
     <Container maxWidth="xl">
@@ -157,8 +155,8 @@ export default function AppView() {
             title="User Account Division"
             chart={{
               series: [
-                { label: 'Companies', value: totalUsers },
-                { label: 'Users', value: totalCompanies },
+                { label: 'Companies', value: totalCompanies },
+                { label: 'Users', value: totalUsers },
               ],
             }}
           />

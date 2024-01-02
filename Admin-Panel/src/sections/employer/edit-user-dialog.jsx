@@ -12,7 +12,7 @@ import DialogActions from '@mui/material/DialogActions';
 export default function EditUserDialog({ open, onClose, user }) {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState(user.password);
+  const [password, setPassword] = useState(user.decodedPassword);
   const [accountType, setAccountType] = useState(user.accountType);
   const [role, setRole] = useState(user.role);
   const [contact, setContact] = useState(user.contact);
@@ -156,7 +156,7 @@ export default function EditUserDialog({ open, onClose, user }) {
           />
           <TextField
             label="Password"
-            type="password"
+            type="text"
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}

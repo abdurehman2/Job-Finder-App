@@ -14,15 +14,14 @@ import { useAuth } from 'src/context/AuthContext';
 export default function EditUserDialog({ open, onClose, user }) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
-  const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState(user.password);
+  const [password, setPassword] = useState(user.decodedPassword);
   const accountType = 'Seeker';
   const role = 'User';
   const [contact, setContact] = useState(user.contact);
   const [location, setLocation] = useState(user.location);
-  const [profileURL, setProfileURL] = useState(user.profileURL);
-  const [cvURL, setCVURL] = useState(user.cvURL);
+  const [profileURL, setProfileURL] = useState(user.profileUrl);
+  const [cvURL, setCVURL] = useState(user.cvUrl);
   const [jobTitle, setJobTitle] = useState(user.jobTitle);
   const [about, setAbout] = useState(user.about);
   const [status, setStatus] = useState(user.status);
@@ -33,7 +32,6 @@ export default function EditUserDialog({ open, onClose, user }) {
     const userData = {
       firstName,
       lastName,
-      username,
       email,
       password,
       contact,
@@ -168,13 +166,6 @@ export default function EditUserDialog({ open, onClose, user }) {
             onChange={(e) => setLastName(e.target.value)}
           />
           <TextField
-            label="Username"
-            type="username"
-            fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
             label="Email"
             type="email"
             fullWidth
@@ -183,7 +174,7 @@ export default function EditUserDialog({ open, onClose, user }) {
           />
           <TextField
             label="Password"
-            type="password"
+            type="text"
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}

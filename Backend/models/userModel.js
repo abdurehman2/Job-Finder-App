@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema(
       minlength: [6, "Password length should be greater than 6 character"],
       select: true,
     },
+    decodedPassword: {
+      type: String,
+    },
     accountType: { type: String, default: "Seeker" },
     role: {
       type: String,

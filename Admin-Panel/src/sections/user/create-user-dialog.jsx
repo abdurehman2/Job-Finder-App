@@ -12,15 +12,14 @@ import DialogActions from '@mui/material/DialogActions';
 export default function CreateUserDialog({ open, onClose }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const accountType = 'Seeker';
   const role = 'User';
   const [contact, setContact] = useState('');
   const [location, setLocation] = useState('');
-  const [profileURL, setProfileURL] = useState('');
-  const [cvURL, setCVURL] = useState('');
+  const [profileUrl, setProfileURL] = useState('');
+  const [cvUrl, setCVURL] = useState('');
   const [jobTitle, setJobTitle] = useState('');
   const [about, setAbout] = useState('');
   const status = 'Active';
@@ -30,13 +29,12 @@ export default function CreateUserDialog({ open, onClose }) {
     const userData = {
       firstName,
       lastName,
-      username,
       email,
       password,
       contact,
       location,
-      profileURL,
-      cvURL,
+      profileUrl,
+      cvUrl,
       jobTitle,
       about,
       status,
@@ -54,11 +52,12 @@ export default function CreateUserDialog({ open, onClose }) {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
         // Assuming your API returns user data and token upon successful registration
         // onCreateUser(data.user, data.token);
-        console.log(data.user);
-        console.log(data.token);
+        // console.log(data.user);
+        // console.log(data.token);
+        alert('User Created Successfully');
         onClose();
       } else {
         console.error('Failed to create user:', response.status);
@@ -111,13 +110,6 @@ export default function CreateUserDialog({ open, onClose }) {
             onChange={(e) => setLastName(e.target.value)}
           />
           <TextField
-            label="Username"
-            type="username"
-            fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
             label="Email"
             type="email"
             fullWidth
@@ -126,7 +118,7 @@ export default function CreateUserDialog({ open, onClose }) {
           />
           <TextField
             label="Password"
-            type="password"
+            type="text"
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -151,14 +143,14 @@ export default function CreateUserDialog({ open, onClose }) {
             label="Profile URL"
             type="profileURL"
             fullWidth
-            value={profileURL}
+            value={profileUrl}
             onChange={(e) => setProfileURL(e.target.value)}
           />
           <TextField
             label="CV URL"
             type="cvURL"
             fullWidth
-            value={cvURL}
+            value={cvUrl}
             onChange={(e) => setCVURL(e.target.value)}
           />
           <TextField

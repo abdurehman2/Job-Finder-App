@@ -17,7 +17,7 @@ export default function CreateUserDialog({ open, onClose }) {
   const role = 'User';
   const [contact, setContact] = useState('');
   const [location, setLocation] = useState('');
-  const [profileURL, setProfileURL] = useState('');
+  const [profileUrl, setProfileURL] = useState('');
   const [about, setAbout] = useState('');
   const status = 'Active';
 
@@ -29,7 +29,7 @@ export default function CreateUserDialog({ open, onClose }) {
       password,
       contact,
       location,
-      profileURL,
+      profileUrl,
       about,
       status,
       role,
@@ -105,7 +105,7 @@ export default function CreateUserDialog({ open, onClose }) {
           />
           <TextField
             label="Password"
-            type="password"
+            type="text"
             fullWidth
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -130,7 +130,7 @@ export default function CreateUserDialog({ open, onClose }) {
             label="Profile URL"
             type="profileURL"
             fullWidth
-            value={profileURL}
+            value={profileUrl}
             onChange={(e) => setProfileURL(e.target.value)}
           />
           <TextField
